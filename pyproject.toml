@@ -27,9 +27,9 @@ classifiers = [
     "Topic :: Scientific/Engineering :: Bio-Informatics",
 ]
 dependencies = [
-    "brian2>=2.5",
+    "brian2>=2.9",
     "sympy>=1.12",
-    "numpy>=1.21",
+    "numpy>=2,<3",
 ]
 
 [project.optional-dependencies]
