@@ -1,0 +1,52 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "brian2-symbode"
+version = "0.1.0"
+description = "Symbolic ODE extraction from Brian2 neural network simulations"
+readme = "README.md"
+license = "GPL-3.0-or-later"
+requires-python = ">=3.9"
+authors = [
+    { name = "ARC@IIT" },
+]
+keywords = ["brian2", "sympy", "neuroscience", "ODE", "symbolic", "spiking-neural-networks"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+]
+dependencies = [
+    "brian2>=2.5",
+    "sympy>=1.12",
+    "numpy>=1.21",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/ARC-IIT/brian2-symbode"
+Documentation = "https://github.com/ARC-IIT/brian2-symbode#readme"
+Repository = "https://github.com/ARC-IIT/brian2-symbode"
+Issues = "https://github.com/ARC-IIT/brian2-symbode/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/brian2_symbode"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-v --tb=short"
