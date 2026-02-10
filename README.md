@@ -12,7 +12,7 @@
 ## Note
 This is an early prototype focused on core functionality. The API and features are likely to evolve based on user feedback and use cases. Please open an issue or reach out if you have suggestions or encounter any problems. I'm new to handling repositories and packaging, so any help or feedback is greatly appreciated!
 
-Keep in mind the repo was set up by an AI assistant, so there may be some rough edges in terms of structure and documentation.
+**Keep in mind the repo was set up by an AI assistant, so there may be some rough edges in terms of structure and documentation.**
 
 The examples are mostly based on work I have been doing. Nothing ensures that the library is robust in general, but I hope it can be useful for others working with Brian2 and symbolic analysis.
 
