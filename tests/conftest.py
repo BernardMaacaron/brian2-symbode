@@ -18,7 +18,6 @@ from brian2 import (
     Synapses,
     Network,
     ms,
-    Hz,
     start_scope,
     defaultclock,
 )
@@ -36,9 +35,9 @@ I_IE : 1
 I_II : 1
 tau : second (shared)
 g : 1
-r_0 : Hz (shared, constant)
-r_max : Hz (shared, constant)
-r = f(x, g, r_0, r_max) : Hz
+r_0 : 1 (shared, constant)
+r_max : 1 (shared, constant)
+r = f(x, g, r_0, r_max) : 1
 """
 
 
@@ -81,20 +80,18 @@ def soc_network():
 
     exc.tau = tau_val
     inh.tau = tau_val
-    exc.r_0 = 20 * Hz
-    inh.r_0 = 20 * Hz
-    exc.r_max = 100 * Hz
-    inh.r_max = 100 * Hz
+    exc.r_0 = 20.0
+    inh.r_0 = 20.0
+    exc.r_max = 100.0
+    inh.r_max = 100.0
     exc.g = 1.0
     inh.g = 1.0
 
     # --- E→E synapse ---
-    syn_EE = Synapses(exc, exc, model="we : 1", on_pre="", method="euler")
-    syn_EE.summed_updaters = {}
     syn_EE = Synapses(
         exc,
         exc,
-        model="we : 1\nI_EE_post = we * r_pre : Hz (summed)",
+        model="we : 1\nI_EE_post = we * r_pre : 1 (summed)",
         method="euler",
     )
     syn_EE.connect()
@@ -105,7 +102,7 @@ def soc_network():
     syn_IE = Synapses(
         inh,
         exc,
-        model="wi : 1\nI_IE_post = wi * r_pre : Hz (summed)",
+        model="wi : 1\nI_IE_post = wi * r_pre : 1 (summed)",
         method="euler",
     )
     syn_IE.connect()
@@ -116,7 +113,7 @@ def soc_network():
     syn_EI = Synapses(
         exc,
         inh,
-        model="we : 1\nI_EI_post = we * r_pre : Hz (summed)",
+        model="we : 1\nI_EI_post = we * r_pre : 1 (summed)",
         method="euler",
     )
     syn_EI.connect()
@@ -127,7 +124,7 @@ def soc_network():
     syn_II = Synapses(
         inh,
         inh,
-        model="wi : 1\nI_II_post = wi * r_pre : Hz (summed)",
+        model="wi : 1\nI_II_post = wi * r_pre : 1 (summed)",
         method="euler",
     )
     syn_II.connect()

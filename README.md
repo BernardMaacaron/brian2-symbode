@@ -2,10 +2,21 @@
 
 **Symbolic ODE extraction for Brian2 networks.**
 
+[![CI](https://github.com/ARC-IIT/brian2-symbode/actions/workflows/ci.yml/badge.svg)](https://github.com/ARC-IIT/brian2-symbode/actions)
+
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Python 3.9+](https://img.shields.io/badge/python-3.9%2B-blue.svg)](https://www.python.org/downloads/)
 
 `brian2-symbode` extracts the full symbolic ODE system from a [Brian2](https://brian2.readthedocs.io/) network, resolving summed synaptic variables, subexpressions, and custom functions into clean SymPy expressions.
+
+## Note
+This is an early prototype focused on core functionality. The API and features are likely to evolve based on user feedback and use cases. Please open an issue or reach out if you have suggestions or encounter any problems. I'm new to handling repositories and packaging, so any help or feedback is greatly appreciated!
+
+Keep in mind the repo was set up by an AI assistant, so there may be some rough edges in terms of structure and documentation.
+
+The examples are mostly based on work I have been doing. Nothing ensures that the library is robust in general, but I hope it can be useful for others working with Brian2 and symbolic analysis.
+
+Important: the project and tests currently assume dimensionless variables (no physical units). The code and test fixtures were validated for this dimensionless mode; using physical units (e.g. `Hz`, `second`) may raise Brian2 unit-mismatch errors and has not been tested.
 
 ## Why?
 
@@ -29,16 +40,12 @@ Brian2 distributes network dynamics across NeuronGroups, Synapses, and implicit 
 
 ## Installation
 
-```bash
-pip install brian2-symbode
-```
-
-Or from source:
+This project is not published on PyPI. Install from source for now:
 
 ```bash
 git clone https://github.com/ARC-IIT/brian2-symbode.git
 cd brian2-symbode
-pip install -e ".[dev]"
+python -m pip install -e ".[dev]"
 ```
 
 ## Quick Start
