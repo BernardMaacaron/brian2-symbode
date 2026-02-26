@@ -485,7 +485,9 @@ class SymbolicGraphExtractor:
             ``'coupling_terms'`` : list of dict
                 One entry per incoming synapse, each with keys
                 ``'synapse'``, ``'weight_symbol'``, ``'source_group'``,
-                ``'activation_expr'``.
+                ``'activation_expr'``, ``'coupling_coeff_expr'``.
+                ``coupling_coeff_expr`` is the symbolic multiplicative factor
+                that scales this summed input in the ODE, i.e. dRHS/dI_sum.
             ``'dead_symbols'`` : list of sympy.Symbol
                 Symbols that are structurally zero (summed targets with
                 no incoming synapse for this group).
@@ -524,6 +526,21 @@ class SymbolicGraphExtractor:
 
             if incoming:
                 # COUPLING
+                # Coupling coefficient in RHS for this summed variable.
+                # Example SOC: RHS = (-x + I_EE + I_IE)/tau -> coeff = 1/tau.
+                coeff_expr = sp.diff(rhs_sym, atom)
+                if coeff_expr.has(atom):
+                    raise ValueError(
+                        f"Non-linear dependence on summed variable '{atom_name}' "
+                        f"in group '{group.name}' is not supported by "
+                        "structured coupling decomposition."
+                    )
+                coeff_expr = self._resolve_expression_symbols(
+                    coeff_expr, group, visited=None, depth=0,
+                )
+                if self.function_map:
+                    coeff_expr = self._replace_functions(coeff_expr)
+
                 for syn, expr_str in incoming:
                     syn_expr = _str_to_sympy(expr_str)
                     weight_sym, activation_expr = self._decompose_synapse_expr(
@@ -534,6 +551,7 @@ class SymbolicGraphExtractor:
                         'weight_symbol': weight_sym,
                         'source_group': syn.source,
                         'activation_expr': activation_expr,
+                        'coupling_coeff_expr': coeff_expr,
                     })
                 subs_dict[atom] = sp.Integer(0)
 
@@ -558,6 +576,7 @@ class SymbolicGraphExtractor:
         all_free = set(local_expr.free_symbols)
         for ct in coupling_terms:
             all_free.update(ct['activation_expr'].free_symbols)
+            all_free.update(ct['coupling_coeff_expr'].free_symbols)
             all_free.add(ct['weight_symbol'])
 
         # Separate state variables from parameters
